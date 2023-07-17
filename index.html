@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="movie.css">
+    <script type="text/javascript" src="jquery-3.6.4.min.js"></script>
+    <script src="jquery.colorbox.js"></script>
+    <link rel="stylesheet" href="colorbox.css">
+    <link href="bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var movie_data =
+                [
+                    {
+                        name: "Toy Story",
+                        poster: "https://lumiere-a.akamaihd.net/v1/images/p_toystory_19639_424d94a0.jpeg",
+                        description: "Set in a world where toys come alive.",
+                        youtubeID: "CxwTLktovTU"
+                    },
+                    {
+                        name: "Soul",
+                        poster: "https://playandgo.com.au/wp-content/uploads/2020/10/disney-pixar_soul_movie-poster.jpg",
+                        description: "'Soul' is a story about the meaning of life and the connections we make with each other.",
+                        youtubeID: "xOsLIiBStEs"
+                    },
+                    {
+                        name: "Inside Out",
+                        poster: "https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg",
+                        description: "Her emotions, Joy, Sadness, Anger, Disgust, and Fear, try their best to make Riley happy.",
+                        youtubeID: "1t0A_tZGrYw"
+                    },
+                    {
+                        name: "Up",
+                        poster: "https://lumiere-a.akamaihd.net/v1/images/p_up_19753_e6f911e3.jpeg",
+                        description: "Carl's epic adventure required a destination both fantastic and plausible.",
+                        youtubeID: "HWEW_qTLSEE"
+                    },
+                    {
+                        name: "Finding Dory",
+                        poster: "https://m.media-amazon.com/images/S/pv-target-images/23fd7a2887a229ceaab9eb2e42dec9f33b823c7d900472b6700cd9308d12dcab.jpg",
+                        description: "Little Dory goes on a search for her parents and overcomes many hardships along her journey.",
+                        youtubeID: "JhvrQeY3doI"
+                    },
+                    {
+                        name: "Monsters, Inc.",
+                        poster: "https://lumiere-a.akamaihd.net/v1/images/p_monstersuniversity_19752_34ba9b39.jpeg",
+                        description: "CMonsters Inc. is a factory where monsters walk into the bedrooms of children at night to scare them and harvest their screams.",
+                        youtubeID: "6tCxnHCqqxg"
+                    }
+                ];
+
+            var template = "\
+            <div class='movie col-md-4 col-centered' youtubelink='{{[[--YOUTUBE--]]}}'>\
+                <div class='inner_image'>\
+                    <image src='{{[[--POSTER--]]}}' />\
+                </div >\
+                <div class='headline'>{{[[--NAME--]]}}</div>\
+                <div class='description'>{{[[--DESCRIPTION--]]}}</div>\
+            </div>\
+            ";
+            for (var i = 0; i < movie_data.length; i++) {
+                var that_movies = template;
+                that_movies = that_movies.replace('{{[[--YOUTUBE--]]}}', movie_data[i].youtubeID);
+                that_movies = that_movies.replace('{{[[--POSTER--]]}}', movie_data[i].poster);
+                that_movies = that_movies.replace('{{[[--NAME--]]}}', movie_data[i].name);
+                that_movies = that_movies.replace('{{[[--DESCRIPTION--]]}}', movie_data[i].description);
+                $("#main_content").append(that_movies);
+            }
+
+            $(".movie").css('cursor', 'pointer');
+            $(".movie").mouseover(function () {
+                $(this).css("background-color", "lightgray");
+            });
+            $(".movie").mouseout(function () {
+                $(this).css("background-color", "white");
+            });
+            $(".movie").click(function () {
+
+                var link = $(this).attr('youtubelink');
+                var full_link = "https://www.youtube.com/embed/" + link + "?rel=0&wmode=transparent&autoplay=1&mute=1"
+                $(".youtube").attr('href', full_link);
+                $(".youtube").trigger("click");
+            });
+
+            $(".youtube").colorbox({ iframe: true, innerWidth: 640, innerHeight: 390 });
+
+            $('.movie').hide().first().show('fast', function showNext() {
+                $(this).next('div').show('fast', showNext);
+            });
+            /*$('.movie').css({ opacity: 0, visibility: visible }).animate({ opacity: 1 }, 'slow');*/
+        });
+    </script>
+</head>
+
+<body>
+    <div class="sticky_menu">
+        <a href="#">EPT THE MOVIES</a>
+    </div>
+    <a class="youtube">Flash/Video (Iframe/Direct Link To Youtube)</a>
+    <div id="main_content" class="content container row-centered"></div>
+</body>
+
+</html>
